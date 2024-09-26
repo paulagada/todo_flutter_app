@@ -180,7 +180,7 @@ class _RegisterState extends State<Register> with AppStorage, Api {
                                 cPIsObscure = !cPIsObscure;
                               });
                             },
-                            icon: Icon(isObscure ? Icons.visibility_off_outlined : Icons.visibility_outlined),
+                            icon: Icon(cPIsObscure ? Icons.visibility_off_outlined : Icons.visibility_outlined),
                           ),
                           hintText: "Confirm Password",
                           prefixIcon: const Icon(Icons.key_outlined),
