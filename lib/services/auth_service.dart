@@ -13,6 +13,7 @@ class AuthProvider with  Api, AppStorage, ChangeNotifier {
   Future<Map<String, dynamic>> loginUser(
     Map<String, dynamic> payload,
   ) async {
+    print("touched");
     var response = await httpClient.post(
       "/auth/login",
       data: payload,

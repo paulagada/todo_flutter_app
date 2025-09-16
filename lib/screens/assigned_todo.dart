@@ -1,20 +1,19 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:todo_app/screens/add_or_edit_todo_page.dart';
-import 'package:todo_app/screens/view_todo.dart';
-import 'package:todo_app/services/model/todo.dart';
+import 'package:todo_app/screens/view_assign_todo.dart';
+import 'package:todo_app/services/model/assignedTodo.dart';
 import 'package:todo_app/services/todo_service.dart';
 import 'package:todo_app/util/api.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class AssignedTodoPage extends StatefulWidget {
+  const AssignedTodoPage({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<AssignedTodoPage> createState() => _AssignedTodoPageState();
 }
 
-class _HomeState extends State<Home> with Api {
-  List<Todo>? todos;
+class _AssignedTodoPageState extends State<AssignedTodoPage> with Api {
+  List<AssignedTodo>? todos;
   TodoService service = TodoService();
   bool loading = false;
   Map<int, bool> tileLoading = {};
@@ -31,7 +30,7 @@ class _HomeState extends State<Home> with Api {
       loading = true;
     });
     try {
-      var response = await service.getTodos();
+      var response = await service.getAssignedTodos();
       todos = response;
     } on DioException catch (e) {
       var apiError = handleDioError(e);
@@ -62,12 +61,12 @@ class _HomeState extends State<Home> with Api {
       tileLoading[id] = true;
     });
     try {
-      await service.updateTodo(id, payload);
+      var response = await service.updateAssignedTodoComplete(id.toString(), payload);
       getTodos();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
-            "Marked as ${payload["completed"] ? "completed" : "incomplete"}",
+            response["message"],
           ),
           backgroundColor: Colors.green,
         ),
@@ -152,7 +151,7 @@ class _HomeState extends State<Home> with Api {
               height: 20,
             ),
             ...todos!.map(
-              (e) => Padding(
+                  (e) => Padding(
                 padding: const EdgeInsets.all(5),
                 child: Card(
                   elevation: 5,
@@ -161,7 +160,7 @@ class _HomeState extends State<Home> with Api {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (con) => ViewTodo(todo: e),
+                          builder: (con) => ViewAssignedTodo(todo: e),
                         ),
                       );
                     },
@@ -177,53 +176,22 @@ class _HomeState extends State<Home> with Api {
                         children: [
                           IconButton(
                             onPressed: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (c) => AddOrEditTodoPage(
-                                    isEdit: true,
-                                    todo: e,
-                                  ),
-                                ),
-                              );
-                            },
-                            iconSize: 18,
-                            icon: const Icon(Icons.edit_outlined),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              deleteTodo(e.id);
-                            },
-                            iconSize: 18,
-                            icon: tileDeleteLoading[e.id] == true
-                                ? const SizedBox(
-                                    height: 10,
-                                    width: 10,
-                                    child: CircularProgressIndicator())
-                                : const Icon(Icons.delete_outline),
-                          ),
-                          IconButton(
-                            onPressed: () {
                               markComplete(
                                 e.id,
-                                Todo(
-                                        completed: !e.completed!,
-                                        description: e.description,
-                                        title: e.title)
-                                    .toJson(),
+                                {"completed" : !e.completed},
                               );
                             },
                             iconSize: 18,
                             icon: tileLoading[e.id] == true
                                 ? const SizedBox(
-                                    height: 10,
-                                    width: 10,
-                                    child: CircularProgressIndicator())
+                                height: 10,
+                                width: 10,
+                                child: CircularProgressIndicator())
                                 : Icon(
-                                    e.completed!
-                                        ? Icons.check_circle
-                                        : Icons.check_circle_outline,
-                                  ),
+                              e.completed
+                                  ? Icons.check_circle
+                                  : Icons.check_circle_outline,
+                            ),
                           ),
                         ],
                       ),

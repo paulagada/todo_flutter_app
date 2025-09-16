@@ -78,7 +78,7 @@ ThemeData appTheme = ThemeData(
     backgroundColor: appPurple,
     foregroundColor: Colors.white,
   ),
-  tabBarTheme: const TabBarTheme(
+  tabBarTheme: const TabBarThemeData(
     dividerColor: Colors.transparent,
     indicatorColor: Colors.transparent,
     splashFactory: NoSplash.splashFactory,
@@ -107,7 +107,7 @@ ThemeData appTheme = ThemeData(
       minimumSize: Size(130, 55),
     ),
   ),
-  cardTheme: const CardTheme(
+  cardTheme: const CardThemeData(
     color: lighterPurple,
   ),
 );
@@ -192,7 +192,7 @@ ThemeData appDarkTheme = ThemeData(
     backgroundColor: appPurple,
     foregroundColor: darkGray,
   ),
-  tabBarTheme: const TabBarTheme(
+  tabBarTheme: const TabBarThemeData(
     dividerColor: Colors.transparent,
     indicatorColor: Colors.transparent,
     splashFactory: NoSplash.splashFactory,
@@ -225,7 +225,7 @@ ThemeData appDarkTheme = ThemeData(
       color: lightGray,
     ),
   ),
-  cardTheme: const CardTheme(
+  cardTheme: const CardThemeData(
     color: Color(0xFF121212),
   ),
 );

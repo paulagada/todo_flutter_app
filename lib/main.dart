@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
           ThemeProvider themeProvider = context.watch<ThemeProvider>();
           bool loggedIn = context.read<AuthProvider>().authenticated;
           return MaterialApp(
-            title: 'Flutter Demo',
+            title: 'Todo\'s app',
             theme: appTheme,
             darkTheme: appDarkTheme,
             themeMode: themeProvider.themeMode,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/config/theme_provider.dart';
+import 'package:todo_app/screens/assigned_todo.dart';
 import 'package:todo_app/screens/completed_page.dart';
 import 'package:todo_app/screens/add_or_edit_todo_page.dart';
 import 'package:todo_app/screens/home.dart';
@@ -54,7 +55,7 @@ class _NavigationPageState extends State<NavigationPage>
     greeting = getGreeting();
     super.initState();
     _tabController = TabController(
-      length: 2,
+      length: 3,
       vsync: this,
     );
     _tabController.addListener(() {
@@ -91,7 +92,11 @@ class _NavigationPageState extends State<NavigationPage>
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: Text(
-          tab == 0 ? "$greeting, ${auth.user!.username}" : "Completed Task",
+          tab == 0
+              ? "$greeting, ${auth.user!.username}"
+              : tab == 1
+                  ? "Completed Task"
+                  : "Assigned Task",
         ),
         actions: [
           tab == 0
@@ -102,7 +107,7 @@ class _NavigationPageState extends State<NavigationPage>
                   },
                 )
               : IconButton(
-                  onPressed: () async{
+                  onPressed: () async {
                     setState(() {
                       loading = true;
                     });
@@ -111,7 +116,9 @@ class _NavigationPageState extends State<NavigationPage>
                       loading = false;
                     });
                   },
-                  icon:loading ? const CircularProgressIndicator() : const Icon(Icons.logout),
+                  icon: loading
+                      ? const CircularProgressIndicator()
+                      : const Icon(Icons.logout),
                 ),
           const SizedBox(
             width: 10,
@@ -123,6 +130,7 @@ class _NavigationPageState extends State<NavigationPage>
         children: const [
           Home(),
           CompletedPage(),
+          AssignedTodoPage(),
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -152,6 +160,10 @@ class _NavigationPageState extends State<NavigationPage>
             Tab(
               icon: Icon(Icons.check),
               text: "Completed",
+            ),
+            Tab(
+              icon: Icon(Icons.assignment),
+              text: "Assigned",
             )
           ],
         ),
